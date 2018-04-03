@@ -41,23 +41,28 @@ function router(nav) {
 
   bookRouter.route('/')
     .get((req, res) => {
-      const request = new sql.Request();
+      (async function query() {
+        const request = new sql.Request();
 
+        request.query('select title, author from books')
+          .then((result) => {
+            console.log('BOOKS', result);
+            const myBooks = result.recordset;
+            res.render(
+              'bookListView',
+              {
+                nav,
+                title: 'Library',
+                books: myBooks,
+              },
+            );
+          }).catch((error) => {
+            console.log('ERROR AT SELECT QUERY:', error);
+          });
 
-      request.query('select * from books')
-        .then((result) => {
-          console.log('BOOKS', result);
-          res.render(
-            'bookListView',
-            {
-              nav,
-              title: 'Library',
-              books,
-            },
-          );
-        }).catch((error) => {
-          console.log('ERROR AT SELECT QUERY:', error);
-        });
+      }())
+
+      
     });
 
 
