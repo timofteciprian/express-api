@@ -1,6 +1,6 @@
 const express = require('express');
 const chalk = require('chalk');
-const debug = require('debug')('app');
+//const debug = require('debug')('app');
 const morgan = require('morgan');
 const path = require('path');
 const sql = require('mssql');
@@ -26,6 +26,12 @@ sql.connect(config).then(() => {
 });
 
 app.use(morgan('tiny'));
+
+app.use((req, res, next) => {
+  console.log('my middleware');
+  next();
+})
+
 app.use('/css', express.static(path.join(__dirname, '/node_modules/bootstrap/dist/css')));
 app.use('/fonts', express.static(path.join(__dirname, '/node_modules/bootstrap/dist/fonts')));
 app.use('/js', express.static(path.join(__dirname, '/node_modules/bootstrap/dist/js')));
@@ -40,8 +46,11 @@ const nav = [
 ];
 
 const bookRouter = require('./src/routes/bookRoutes')(nav);
+const adminRouter = require('./src/routes/adminRoutes')(nav);
 
 app.use('/books', bookRouter);
+app.use('/admin', adminRouter);
+
 app.get('/', (req, res) => {
   res.render('index', {
     nav: [
