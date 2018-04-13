@@ -26,9 +26,9 @@ function router(nav) {
             {
               nav,
               title: 'Library',
-              books
+              books,
             },
-          ); s
+          );
         } catch (err) {
           console.log(err.strack);
         }
@@ -65,7 +65,6 @@ function router(nav) {
           console.log(err.strack);
         }
       }());
-      
     });
   return bookRouter;
 }
