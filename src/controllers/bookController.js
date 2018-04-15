@@ -1,6 +1,6 @@
+const { MongoClient, ObjectID } = require('mongodb');
 
-
-module.exports = function bookController(nav) {
+module.exports = function bookController(bookService, nav) {
   function getIndex(req, res) {
     const url = 'mongodb://localhost:27017';
     const dbName = 'libraryApp';
@@ -29,6 +29,7 @@ module.exports = function bookController(nav) {
       client.close();
     }());
   }
+
   function getById(req, res) {
     const { id } = req.params;
     const url = 'mongodb://localhost:27017';
@@ -45,15 +46,17 @@ module.exports = function bookController(nav) {
         const col = await db.collection('books')
 
         const book = await col.findOne({ _id: new ObjectID(id) });
+        console.log('book;', book);
 
-        console.log(book);
+        book.details = await bookService.getBookById(book.bookId);
+        console.log('byId', book.details);
         res.render('bookView', {
           nav,
           title: 'Library',
           book,
         });
       } catch (err) {
-        console.log(err.strack);
+        console.log('error from books', err);
       }
     }());
   }

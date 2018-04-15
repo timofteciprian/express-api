@@ -8,12 +8,14 @@ const books = [
     title: 'War and Peace',
     genre: 'Historical Fiction',
     author: 'Lev Niko',
+    bookId: 656,
     read: false,
   },
   {
     title: 'War and Peace',
     genre: 'Historical Fiction',
     author: 'Lev Niko',
+    bookId: 24280,
     read: false,
   },
   {
